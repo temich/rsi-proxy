@@ -1,7 +1,20 @@
 {
 	"name"          : "rsi-proxy",
-	"version"       : "0.1.0"
+	"version"       : "0.1.0",
 	"description"   : "Representation State Identification Proxy Service",
-	"author"        : "Artem Gurtovoy <tema.gurtovoy@gmail.com>",
-	"repositiry"    : { "type": "git", "url": "https://github.com/temich/rsi-proxy.git" },
+	"author"        : {
+		"name": "Artem Gurtovoy",
+		"email": " <tema.gurtovoy@gmail.com>"
+	},
+	"repositiry"    : {
+		"type": "git",
+		"url": "https://github.com/temich/rsi-proxy.git"
+	},
+	"dependencies"	: {
+		"connect": "2",
+		"redis": "0.8",
+		"async": "0.1",
+		"memorystream": "0.2",
+		"temp": "0.4"
+	}
 }
