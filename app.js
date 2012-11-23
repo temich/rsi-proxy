@@ -49,7 +49,7 @@ function proxy(req, res, next) {
 
 appDomain.run(function() {
 
-	fs.mkdir(config.rsi['static-path']);
+	fs.mkdir(config.rsi.cache.root);
 
 	connect()
 		.use(rsi.filter(cache, config.rsi))
