@@ -1,0 +1,15 @@
+{
+	"port": "8080",
+
+	"rsi": {
+		"link-regex": "(?:(?:href|src)=|(?:url|import)\\()[\"']?([^\"'\\)]+)(?:[\"']?|\\)|>| )",
+		"ignore-extensions": [".html", ".htm"],
+		"static-path": "cache"
+	},
+
+	"redis": {
+		"host": "redis.dev",
+		"port": 6379,
+		"db": 1
+	}
+}
