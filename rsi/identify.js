@@ -61,8 +61,7 @@ module.exports = function(res, uri, cache, options) {
 		},
 
 		dispose: function() {
-			console.log('clean', tmp);
-			fs.existsSync(tmp) && fs.unlinkSync(tmp);
+			fs.existsSync(tmp) && fs.unlink(tmp);
 		}
 	};
 };

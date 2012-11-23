@@ -1,9 +1,9 @@
 var domain = require('domain'),
+	fs = require('fs'),
 	redis = require('redis'),
 	connect = require('connect'),
 	rsi = require('./rsi'),
-	config = require('./config.json'),
-	fs = require('fs');
+	config = require('./config.json');
 
 var appDomain = domain.create(),
 	cache = redis.createClient(config.redis.port, config.redis.host);
