@@ -32,7 +32,9 @@ module.exports = function(req, res, cache, options) {
 
 		if (r.headers['content-type'].match(/^(?:text\/|application\/json)/)) {
 			rsi.link(req, r, uri, cache, options, function(incomplete) {
-				incomplete || id.persist();
+				incomplete
+					? id.persist()
+					: id.dispose();
 			});
 		} else {
 			id.persist();

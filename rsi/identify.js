@@ -5,10 +5,10 @@ var crypto = require('crypto'),
 
 module.exports = function(res, uri, cache, options) {
 	var sha = crypto.createHash('sha1'),
+		tmp = temp.path(options['temp-prefix']),
 		persist = false,
 		done = false,
 		closed = false,
-		tmp = temp.path(options['temp-prefix']),
 		fd,
 		rsi;
 
@@ -58,6 +58,11 @@ module.exports = function(res, uri, cache, options) {
 		persist: function() {
 			persist = true;
 			save();
+		},
+
+		dispose: function() {
+			console.log('clean', tmp);
+			fs.existsSync(tmp) && fs.unlinkSync(tmp);
 		}
 	};
 };
