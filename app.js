@@ -2,7 +2,8 @@ var domain = require('domain'),
 	redis = require('redis'),
 	connect = require('connect'),
 	rsi = require('./rsi'),
-	config = require('./config.json');
+	config = require('./config.json'),
+	fs = require('fs');
 
 var appDomain = domain.create(),
 	cache = redis.createClient(config.redis.port, config.redis.host);
@@ -47,6 +48,8 @@ function proxy(req, res, next) {
 }
 
 appDomain.run(function() {
+
+	fs.mkdir(config.rsi['static-path']);
 
 	connect()
 		.use(rsi.filter(cache, config.rsi))
