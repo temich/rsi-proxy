@@ -2,9 +2,14 @@
 	"port": "8080",
 
 	"rsi": {
+		"strip": 8,
+		"cache": {
+			"root": "./cache",
+			"dirlen": 2
+		},
+		"temp-prefix": "rsi-",
 		"link-regex": "(?:(?:href|src)=|(?:url|import)\\()[\"']?([^\"'\\)]+)(?:[\"']?|\\)|>| )",
-		"ignore-extensions": [".html", ".htm"],
-		"static-path": "cache"
+		"ignore-extensions": [".html", ".htm"]
 	},
 
 	"redis": {

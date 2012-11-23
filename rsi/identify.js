@@ -8,7 +8,7 @@ module.exports = function(res, uri, cache, options) {
 		persist = false,
 		done = false,
 		closed = false,
-		tmp = temp.path('rsi-'),
+		tmp = temp.path(options['temp-prefix']),
 		fd,
 		rsi;
 
@@ -26,7 +26,8 @@ module.exports = function(res, uri, cache, options) {
 	res.on('end', function() {
 		var digest = sha.digest('hex');
 
-		rsi = '/' + digest.substr(0, 2) + '/' + digest.substr(2, 6)
+		rsi = '/' + digest.substr(0, options.cache.dirlen)
+			+ '/' + digest.substr(options.cache.dirlen, (options.strip || digest.length)- options.cache.dirlen)
 			+ path.extname(uri.pathname);
 
 		fd.end();
@@ -44,7 +45,7 @@ module.exports = function(res, uri, cache, options) {
 
 		console.log(uri.href, ' --> ', rsi);
 
-		file = path.resolve(options['static-path'], '.' + rsi);
+		file = path.resolve(options.cache.root, '.' + rsi);
 		dir = path.dirname(file);
 
 		fs.existsSync(dir) || fs.mkdirSync(dir);
