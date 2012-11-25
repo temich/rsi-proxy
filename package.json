@@ -14,5 +14,10 @@
 		"connect": "2",
 		"redis": "0.8",
 		"rsi": "0.1"
+	},
+	"scripts": {
+		"start": "node src/app.js",
+		"install-service": "winser -i",
+		"remove-service": "winser -x -r"
 	}
 }

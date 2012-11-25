@@ -7,6 +7,10 @@ Configure web-server reverse-proxy (see [example configurations](https://github.
 
 Configure proxy settings (config.json)
 
+Start the service
+
+	npm start
+
 Make a request
 
 	http://proxy.local//nodejs.org/api/
