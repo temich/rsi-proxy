@@ -13,8 +13,6 @@
 	"dependencies"	: {
 		"connect": "2",
 		"redis": "0.8",
-		"async": "0.1",
-		"memorystream": "0.2",
-		"temp": "0.4"
+		"rsi": "0.1"
 	}
 }
