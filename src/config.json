@@ -4,7 +4,7 @@
 	"rsi": {
 		"strip": 8,
 		"cache": {
-			"root": "./cache",
+			"root": "../cache",
 			"dirlen": 2
 		},
 		"temp-prefix": "rsi-",
