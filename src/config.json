@@ -8,7 +8,7 @@
 			"dirlen": 2
 		},
 		"temp-prefix": "rsi-",
-		"link-regex": "(?:(?:href|src)=|(?:url|import)\\()[\"']?([^\"'\\)]+)(?:[\"']?|\\)|>| )",
+		"link-regex": "(?:(?:href|src|data)=|(?:url|import)\\()[\"']?([^\"'\\)]+)(?:[\"']?|\\)|>| )",
 		"ignore-extensions": [".html", ".htm"]
 	},
 
@@ -16,5 +16,11 @@
 		"host": "redis.dev",
 		"port": 6379,
 		"db": 1
+	},
+
+	"tracer" : {
+		"root": "./logs",
+		"level": "log",
+		"format": "<{{title}}> {{timestamp}}\n {{message}}\n in {{file}}:{{line}}"
 	}
 }
