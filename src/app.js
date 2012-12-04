@@ -33,7 +33,7 @@ appd.run(function() {
 	fs.existsSync(config.tracer.root) || fs.mkdirSync(config.tracer.root);
 
 	connect()
-		.use(rsi.proxy(cache, config.rsi))
+		.use(rsi.proxy(cache, config.rsi, logger))
 		.listen(process.env.PORT || config.port);
 
 	logger.info('Server started ' + process.pid);
