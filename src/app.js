@@ -1,4 +1,6 @@
-var domain = require('domain'),
+var cluster = require('cluster'),
+    domain = require('domain'),
+    os = require('os'),
 	fs = require('fs'),
 	redis = require('redis'),
 	connect = require('connect'),
@@ -6,52 +8,76 @@ var domain = require('domain'),
 	config = require('./config.json'),
 	logger = require('tracer').dailyfile(config.tracer);
 
-var appd = domain.create(),
-	cache = redis.createClient(config.redis.port, config.redis.host);
+// Ensure log directory exists
+if (!fs.existsSync(config.tracer.root)) {
+    fs.mkdirSync(config.tracer.root);
+    logger.info('Log directory created ' + config.tracer.root);
+}
 
-appd.on('error', function(err) {
-	logger.error(err);
-	console.error(err);
-	appd.dispose();
-	cache.end();
-	process.exit(1);
-});
+if (cluster.isMaster) {
 
-appd.add(cache);
+    var procs = config.procs || os.cpus().length;
 
-cache.on('ready', function() {
-	if (config.redis.db) {
-		cache.select(config.redis.db);
-	}
+    logger.info('Forking ' + procs + ' workers');
 
-	logger.info('Redis connected to ' + config.redis.host + ':' + config.redis.port + (config.redis.db ? '[' + config.redis.db + ']' : ''));
-});
-
-appd.run(function() {
-
-	// Create cache directory if required
-	if (config.rsi.cache
-		&& !config.rsi.cache.disabled
-		&& !fs.existsSync(config.rsi.cache.root)) {
-
-		fs.mkdir(config.rsi.cache.root);
-        logger.info('Cache directory created ' + config.rsi.cache.root);
-	}
-
-	// Ensure log directory exists
-	if (!fs.existsSync(config.tracer.root)) {
-        fs.mkdirSync(config.tracer.root);
-        logger.info('Log directory created ' + config.tracer.root);
+    while (procs--) {
+        cluster.fork();
     }
 
-	var port = process.env.PORT || config.port;
+    cluster.on('exit', function(worker, code, signal) {
+        logger.error('Worker ' + worker.id + ' died (code: ' + code + ', signal: ' + signal + '). Restarting...');
+        cluster.fork();
+    });
 
-    connect()
-		.use(rsi.proxy(cache, config.rsi, logger))
-		.listen(port);
+    cluster.on('online', function(worker) {
+        logger.info('Worker ' + worker.id + ' online');
+    });
 
-	logger.info('Server started on port ' + port);
-});
+    cluster.on('listening', function(worker, address) {
+        logger.info('Worker ' + worker.id + ' connected to ' + address.address + ':' + address.port);
+    });
 
+} else {
 
+    var appd = domain.create(),
+        cache = redis.createClient(config.redis.port, config.redis.host);
 
+    appd.on('error', function(err) {
+        logger.error(err);
+        console.error(err);
+        appd.dispose();
+        cache.end();
+        process.exit(1);
+    });
+
+    appd.add(cache);
+
+    cache.on('ready', function() {
+        if (config.redis.db) {
+            cache.select(config.redis.db);
+        }
+
+        logger.info('Redis (worker:' + cluster.worker.id + ') connected to ' + config.redis.host + ':' + config.redis.port + (config.redis.db ? '[' + config.redis.db + ']' : ''));
+    });
+
+    appd.run(function() {
+
+        // Create cache directory if required
+        if (config.rsi.cache
+            && !config.rsi.cache.disabled
+            && !fs.existsSync(config.rsi.cache.root)) {
+
+            fs.mkdir(config.rsi.cache.root);
+            logger.info('Cache directory created ' + config.rsi.cache.root);
+        }
+
+        var port = process.env.PORT || config.port;
+
+        connect()
+            .use(rsi.proxy(cache, config.rsi, logger))
+            .listen(port);
+
+        logger.info('Worker ' + cluster.worker.id + ' starting on port ' + port);
+    });
+
+}
