@@ -4,6 +4,7 @@
 	"rsi": {
 		"strip": 8,
 		"cache": {
+			"disabled": true,
 			"root": "./cache",
 			"dirlen": 2
 		},

@@ -29,7 +29,15 @@ cache.on('ready', function() {
 
 appd.run(function() {
 
-	fs.existsSync(config.tracer.root) || fs.mkdir(config.rsi.cache.root);
+	// Create cache directory if required
+	if (config.rsi.cache
+		&& !config.rsi.cache.disabled
+		&& !fs.existsSync(config.rsi.cache.root)) {
+
+		fs.mkdir(config.rsi.cache.root);
+	}
+
+	// Ensure log directory exists
 	fs.existsSync(config.tracer.root) || fs.mkdirSync(config.tracer.root);
 
 	connect()
