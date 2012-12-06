@@ -10,7 +10,8 @@
 		},
 		"temp-prefix": "rsi-",
 		"link-regex": "(?:(?:href|src|data)=|(?:url|import)\\()[\"']?([^\"'\\)]+)(?:[\"']?|\\)|>| )",
-		"ignore-extensions": [".html", ".htm"]
+		"ignore-extensions": [".html", ".htm", ".aspx"],
+        "local-domains": ["chat.ad.local"]
 	},
 
 	"redis": {
