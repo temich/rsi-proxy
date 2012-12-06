@@ -35,16 +35,22 @@ appd.run(function() {
 		&& !fs.existsSync(config.rsi.cache.root)) {
 
 		fs.mkdir(config.rsi.cache.root);
+        logger.info('Cache directory created ' + config.rsi.cache.root);
 	}
 
 	// Ensure log directory exists
-	fs.existsSync(config.tracer.root) || fs.mkdirSync(config.tracer.root);
+	if (!fs.existsSync(config.tracer.root)) {
+        fs.mkdirSync(config.tracer.root);
+        logger.info('Log directory created ' + config.tracer.root);
+    }
 
-	connect()
+	var port = process.env.PORT || config.port;
+
+    connect()
 		.use(rsi.proxy(cache, config.rsi, logger))
-		.listen(process.env.PORT || config.port);
+		.listen(port);
 
-	logger.info('Server started ' + process.pid);
+	logger.info('Server started on port ' + port);
 });
 
 
