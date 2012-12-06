@@ -1,6 +1,6 @@
 {
 	"name"          : "rsi-proxy",
-	"version"       : "0.2.0",
+	"version"       : "0.2.1",
 	"description"   : "Representation State Identification Proxy Service",
 	"author"        : {
 		"name": "Artem Gurtovoy",
@@ -17,7 +17,7 @@
 		"tracer": "0.4"
 	},
 	"scripts": {
-		"start": "node src/app.js",
+		"start": "node app/app.js",
 		"install-service": "winser -i",
 		"remove-service": "winser -x -r"
 	}
