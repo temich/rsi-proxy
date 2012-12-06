@@ -1,6 +1,6 @@
 {
 	"name"          : "rsi-proxy",
-	"version"       : "0.1.1",
+	"version"       : "0.2.0",
 	"description"   : "Representation State Identification Proxy Service",
 	"author"        : {
 		"name": "Artem Gurtovoy",
